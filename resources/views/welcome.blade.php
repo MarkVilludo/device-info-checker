@@ -22,6 +22,15 @@
                 return null;
             }
         }
+        function reverseInfo(resolutionSize){
+            let currentResolution = resolutionSize
+
+            // Split the string by 'x' delimiter
+            let resolutionParts = currentResolution.split('x');
+
+            // Reverse the order of the resolution parts
+            return resolutionParts.reverse().join('x');
+        }
         async function getInfo() {
             const ip = await fetchIpAddress();
             // in a browser, when using a script tag:
@@ -61,7 +70,9 @@
                     client.isMac(),
                     client.isLinux(),
                     client.isUbuntu(),
-                    ip
+                    ip,
+                    reverseInfo(client.getCurrentResolution()),
+                    reverseInfo(client.getAvailableResolution())
                 ),
                 [
                     // client.getBrowserMajorVersion(),
@@ -93,7 +104,10 @@
                     "isMac: "+client.isMac(),
                     "isLinux: "+client.isLinux(),
                     "isUbuntu: "+client.isUbuntu(),
-                    "IP address: "+ ip
+                    "IP address: "+ ip,
+                    "getCurrentResolutionModify: "+ client.getCurrentResolution(),
+                    "getAvailableResolutionModify: "+ client.getAvailableResolution(),
+                    
                 ]
             ];
             const distinct = [
