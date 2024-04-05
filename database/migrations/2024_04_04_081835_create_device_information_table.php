@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('time_zone', 32)->nullable();
             $table->string('language', 8)->nullable();
-            $table->string('color_depth', 8)->nullable();
+            $table->integer('color_depth')->nullable();
             $table->string('current_resolution', 64)->nullable();
             $table->string('available_resolution', 64)->nullable();
             $table->string('device_type', 32)->nullable();
