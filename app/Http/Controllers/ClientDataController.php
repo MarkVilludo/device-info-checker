@@ -69,6 +69,9 @@ class ClientDataController extends Controller
         }
         $matchCountField = array_sum($matchingFields);
         // Calculate similarity score as a percentage
-        return ($matchCountField / ($totalFields - 1)) * 100; // Exclude the "ip" field from totalFields
+        $percentage = ($matchCountField / ($totalFields - 1)) * 100; // Exclude the "ip" field from totalFields
+        
+        //round off 2 decimal places
+        return number_format($percentage, 2);
     }
 }
