@@ -16,14 +16,14 @@ class ClientDataController extends Controller
     {
         // Fetch clients from the database based on specific criteria
         $clients = $this->deviceInformation->where('ip', '=', $request->ip)
-                         ->whereDate('created_at', Carbon::today())
-                         ->get();
+                                           ->whereDate('created_at', Carbon::today())
+                                           ->get();
         
-        $testArray = [];
+        // $testArray = [];
         // Iterate through the filtered clients and calculate similarity score
         foreach ($clients as $client) {
             $similarityScore = $this->calculateSimilarityScore($request->all(), $client);
-            $testArray[] = $similarityScore;
+            // $testArray[] = $similarityScore;
             // Check if the similarity score is above the threshold (80%)
             if ($similarityScore >= 80) {
                 // Client with similar data found
@@ -43,7 +43,6 @@ class ClientDataController extends Controller
     {
         $matchingFields = [];
         $totalFields = count($requestData);
-        
         // Iterate through the fields in the requestData
         foreach ($requestData as $key => $value) {
             // Exclude the "ip" field from comparison
@@ -72,5 +71,4 @@ class ClientDataController extends Controller
         // Calculate similarity score as a percentage
         return ($matchCountField / ($totalFields - 1)) * 100; // Exclude the "ip" field from totalFields
     }
-
 }
