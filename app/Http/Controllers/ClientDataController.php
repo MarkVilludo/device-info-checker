@@ -102,9 +102,21 @@ class ClientDataController extends Controller
                 // Check if the field exists in the client object
                 if (isset($client->$key)) {
                     // Increment matchingFields if the field value matches
-                    if ($client->$key === $value) {
-                        $matchingFields[] = 1;
+                    // if ($client->$key === $value) {
+                    //     $matchingFields[] = 1;
+                    // }
+                    if (is_bool($value)) {
+                        // If the value is boolean, compare it directly
+                        if ($client->$key === $value) {
+                            $matchingFields[] = 1;
+                        }
+                    } else {
+                        // If the value is not boolean, compare as string
+                        if ($client->$key == $value) {
+                            $matchingFields[] = 1;
+                        }
                     }
+
                 } else {
                     // If any field doesn't exist in the client object, return 0 similarity
                     $matchingFields[] = 0;

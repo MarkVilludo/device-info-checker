@@ -39,4 +39,25 @@ class DeviceInformation extends Model
         'is_ubuntu',
         'ip'
     ];
+
+    protected $casts = [
+        'is_cookie' => 'boolean',
+        'is_session_storage' => 'boolean',
+        'is_canvas' => 'boolean',
+        'is_silverlight' => 'boolean',
+        'is_mobile' => 'boolean',
+        'is_mobile_major' => 'boolean',
+        'is_mobile_android' => 'boolean',
+        'is_mobile_opera' => 'boolean',
+        'is_mobile_windows' => 'boolean',
+        'is_mobile_blackberry' => 'boolean',
+        'is_mobile_ios' => 'boolean',
+        'is_iphone' => 'boolean',
+        'is_ipad' => 'boolean',
+        'is_ipod' => 'boolean',
+        'is_windows' => 'boolean',
+        'is_mac' => 'boolean',
+        'is_linux' => 'boolean',
+        'is_ubuntu' => 'boolean',
+    ];
 }
