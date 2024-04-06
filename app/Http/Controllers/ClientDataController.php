@@ -28,7 +28,7 @@ class ClientDataController extends Controller
             if ($client->fingerprint_portrait == $request->fingerprint_portrait) {
                 $isMatch = true;
                 $similarityScore = "100";
-            } elseif ($client->fingerprint_landscape == $request->fingerprint_landscape) {
+            } else if ($client->fingerprint_landscape == $request->fingerprint_landscape) {
                 $isMatch = true;
                 $similarityScore = "100";
             } else {
