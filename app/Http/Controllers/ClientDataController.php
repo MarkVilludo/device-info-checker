@@ -15,25 +15,38 @@ class ClientDataController extends Controller
     public function store(ClientDataRequest $request)
     {
         // Fetch clients from the database based on specific criteria
-        $clients = $this->deviceInformation->where('ip', '=', $request->ip)
+        $client = $this->deviceInformation->where('ip', '=', $request->ip)
                                            ->whereDate('created_at', Carbon::today())
-                                           ->get();
+                                           ->where('device_type', $request->device_type)
+                                           ->first();
         
-        // $testArray = [];
-        // Iterate through the filtered clients and calculate similarity score
-        foreach ($clients as $client) {
-            $similarityScore = $this->calculateSimilarityScore($request->all(), $client);
-            // $testArray[] = $similarityScore;
-            // Check if the similarity score is above the threshold (80%)
-            if ($similarityScore >= 80) {
+        if ($client) {
+            //check portrait and landscape custom fingerprint first
+            $isMatch = false;
+            if ($client->fingerprint_portrait == $request->fingerprint_portrait) {
+                $isMatch = true;
+                $similarityScore = "100";
+            } else if ($client->fingerprint_landscape == $request->fingerprint_landscape) {
+                $isMatch = true;
+                $similarityScore = "100";
+            } else {
+                // $testArray = [];
+                // Iterate through the filtered clients and calculate similarity score
+                $similarityScore = $this->calculateSimilarityScore($request->all(), $client);
+                // $testArray[] = $similarityScore;
+                // Check if the similarity score is above the threshold (80%)
+                if ($similarityScore >= 80) {
+                    $isMatch = true;
+                }
+            }
+            if ($isMatch) {
                 // Client with similar data found
                 $data['success'] = false;
-                $data['message'] = 'Failed, ther is existing client data';
+                $data['message'] = 'Failed, there is existing client data';
                 $data['probability'] = $similarityScore.'%';
                 return response()->json($data, 200);
             }
         }
-        // return $testArray;
         // No similar client found
         $this->deviceInformation->fill($request->all())->save();
         return response()->json(['success' => true, 'message' => 'Successfully saved client data'], 200);

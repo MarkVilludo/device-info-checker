@@ -54,6 +54,8 @@ class ClientDataRequest extends FormRequest
             'is_linux' => 'nullable|boolean',
             'is_ubuntu' => 'nullable|boolean',
             'ip' => 'required|string|ip',
+            'fingerprint_portrait' => 'nullable',
+            'fingerprint_landscape' => 'nullable',
         ];
     }
     

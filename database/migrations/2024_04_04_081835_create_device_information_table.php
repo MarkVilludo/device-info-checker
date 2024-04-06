@@ -43,6 +43,8 @@ return new class extends Migration
             $table->boolean('is_mac')->nullable();
             $table->boolean('is_linux')->nullable();
             $table->boolean('is_ubuntu')->nullable();
+            $table->string('fingerprint_portrait', 32)->nullable();
+            $table->string('fingerprint_landscape', 32)->nullable();
             $table->timestamps();
         });
     }

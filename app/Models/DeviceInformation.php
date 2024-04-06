@@ -37,7 +37,9 @@ class DeviceInformation extends Model
         'is_mac',
         'is_linux',
         'is_ubuntu',
-        'ip'
+        'ip',
+        'fingerprint_portrait',
+        'fingerprint_landscape'
     ];
 
     protected $casts = [
