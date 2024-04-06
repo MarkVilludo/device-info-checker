@@ -58,7 +58,7 @@ class ClientDataRequest extends FormRequest
             'fingerprint_landscape' => 'nullable',
         ];
     }
-    
+
     /**
      * Handle validation error message
      *
@@ -67,7 +67,7 @@ class ClientDataRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         $response = response()->json(['errors' => $validator->errors()], 422);
-        
+
         throw new HttpResponseException($response);
     }
 }

@@ -17,18 +17,18 @@ class ClientDataController extends Controller
     {
         // Fetch clients from the database based on specific criteria
         $client = $this->deviceInformation->where('ip', '=', $request->ip)
-            ->whereDate('created_at', Carbon::today())
-            ->where('device_type', $request->device_type)
-            ->latest()
-            ->first();
-        
+                                          ->whereDate('created_at', Carbon::today())
+                                          ->where('device_type', $request->device_type)
+                                          ->latest()
+                                          ->first();
+
         if ($client) {
             //check portrait and landscape custom fingerprint first
             $isMatch = false;
             if ($client->fingerprint_portrait == $request->fingerprint_portrait) {
                 $isMatch = true;
                 $similarityScore = "100";
-            } else if ($client->fingerprint_landscape == $request->fingerprint_landscape) {
+            } elseif ($client->fingerprint_landscape == $request->fingerprint_landscape) {
                 $isMatch = true;
                 $similarityScore = "100";
             } else {
@@ -45,7 +45,7 @@ class ClientDataController extends Controller
                 // Client with similar data found
                 $data['success'] = false;
                 $data['message'] = 'Failed, there is existing client data';
-                $data['probability'] = $similarityScore.'%';
+                $data['probability'] = $similarityScore . '%';
                 return response()->json($data, 200);
             }
         }
@@ -53,7 +53,7 @@ class ClientDataController extends Controller
         $this->deviceInformation->fill($request->all())->save();
         return response()->json(['success' => true, 'message' => 'Successfully saved client data'], 200);
     }
-    
+
     private function calculateSimilarityScore($requestData, $client)
     {
         $matchingFields = [];
@@ -85,7 +85,7 @@ class ClientDataController extends Controller
         $matchCountField = array_sum($matchingFields);
         // Calculate similarity score as a percentage
         $percentage = ($matchCountField / ($totalFields - 1)) * 100; // Exclude the "ip" field from totalFields
-        
+
         //round off 2 decimal places
         return number_format($percentage, 2);
     }
