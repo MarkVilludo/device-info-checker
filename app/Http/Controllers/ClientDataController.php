@@ -18,6 +18,7 @@ class ClientDataController extends Controller
         $client = $this->deviceInformation->where('ip', '=', $request->ip)
                                            ->whereDate('created_at', Carbon::today())
                                            ->where('device_type', $request->device_type)
+                                           ->latest()
                                            ->first();
         
         if ($client) {
