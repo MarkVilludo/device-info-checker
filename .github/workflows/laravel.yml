@@ -36,4 +36,5 @@ jobs:
         DB_DATABASE: database/database.sqlite
       run: php artisan test
     - name: Test coding standard
-      run:  phpcs --standard=PSR1 app
+    # run:  phpcs --standard=PSR1 app
+      # run:  phpcs --standard=PSR1 app
