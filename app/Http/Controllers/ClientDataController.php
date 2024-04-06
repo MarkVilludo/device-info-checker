@@ -9,17 +9,18 @@ use Carbon\Carbon;
 
 class ClientDataController extends Controller
 {
-    public function __construct(DeviceInformation $deviceInformation) {
+    public function __construct(DeviceInformation $deviceInformation)
+    {
         $this->deviceInformation = $deviceInformation;
     }
     public function store(ClientDataRequest $request)
     {
         // Fetch clients from the database based on specific criteria
         $client = $this->deviceInformation->where('ip', '=', $request->ip)
-                                           ->whereDate('created_at', Carbon::today())
-                                           ->where('device_type', $request->device_type)
-                                           ->latest()
-                                           ->first();
+            ->whereDate('created_at', Carbon::today())
+            ->where('device_type', $request->device_type)
+            ->latest()
+            ->first();
         
         if ($client) {
             //check portrait and landscape custom fingerprint first

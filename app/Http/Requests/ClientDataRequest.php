@@ -61,8 +61,9 @@ class ClientDataRequest extends FormRequest
     
     /**
      * Handle validation error message
+     *
      * @return <json>
-    */
+     */
     protected function failedValidation(Validator $validator)
     {
         $response = response()->json(['errors' => $validator->errors()], 422);
