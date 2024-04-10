@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plugin Information</title>
-    <script src="{{ asset('js/clientjs.min.js') }}"></script>
+    <script src="./node_modules/clientjs/dist/client.min.js"></script>
 </head>
 <body>
     <h1>Device Information</h1>
@@ -28,19 +28,22 @@
         }
 
         async function guessNetworkType() {
-            if ('connection' in navigator) {
-                const connection = navigator.connection;
-                if (connection.effectiveType) {
-                    return connection.effectiveType;
+
+            if (navigator) {
+                if ('connection' in navigator) {
+                    const connection = navigator.connection;
+                    if (connection.effectiveType) {
+                        return connection.effectiveType;
+                    }
                 }
-            }
-            const userAgent = navigator.userAgent;
-            if (/LTE/i.test(userAgent)) {
-                return "4G/LTE";
-            } else if (/3G/i.test(userAgent)) {
-                return "3G";
-            } else {
-                return "Unknown";
+                const userAgent = navigator.userAgent;
+                if (/LTE/i.test(userAgent)) {
+                    return "4G/LTE";
+                } else if (/3G/i.test(userAgent)) {
+                    return "3G";
+                } else {
+                    return "Unknown/Not Supported";
+                }
             }
         }
        
@@ -52,7 +55,18 @@
             const client = new ClientJS();
             const availResolution = await reverseInfo(client.getAvailableResolution());
             const landscape = await reverseInfo(client.getCurrentResolution());
-            const batteryLevel = (await navigator.getBattery()).level * 100;
+            let batteryLevel;
+
+            if ('getBattery' in navigator) {
+                const battery = await navigator.getBattery();
+                batteryLevel = battery ? Math.round(battery.level * 100) : null;
+            } else {
+                // Fallback solution for browsers that don't support navigator.getBattery()
+                // This could include iPhones using Safari
+                batteryLevel = 'Battery level retrieval not supported';
+            }
+            console.log(batteryLevel);
+            // const batteryLevel = navigator.getBattery() ? ((await  navigator.getBattery()).level * 100) : null;
             const network = await guessNetworkType();
             const info = [
               
@@ -84,8 +98,8 @@
                     ip,
                     client.getAvailableResolution(),
                     client.getCurrentResolution(),
-                    batteryLevel,
-                    network
+                    batteryLevel ? batteryLevel : 'Not Supported',
+                    network ? network : 'Not Supported'
                 ),
                 client.getCustomFingerprint(
                     client.getTimeZone(),
@@ -115,13 +129,11 @@
                     ip,
                     availResolution,
                     landscape,
-                    batteryLevel,
-                    network
+                    batteryLevel ? batteryLevel : 'Not Supported',
+                    network ? network : 'Not Supported'
                 ),
-                    client.getBrowserMajorVersion(),
                     client.getTimeZone(),
                     client.getLanguage(),
-                    client.getScreenPrint(),
                     client.getFonts(),
                     client.getOS(),
                     client.getEngine(),
@@ -149,16 +161,14 @@
                     client.getCurrentResolution(),
                     availResolution,
                     landscape,
-                    batteryLevel,
-                    network
+                    batteryLevel ? batteryLevel : 'Not Supported',
+                    network ? network : 'Not Supported'
             ];
             const distinct = [
                 'getCustomFingerprintPortrait',
                 'getCustomFingerprintLandscape',
-                'getBrowserMajorVersion',
                 'getTimeZone',
                 'getLanguage',
-                'getScreenPrint',
                 'getFonts',
                 'getOS',
                 'getEngine',
